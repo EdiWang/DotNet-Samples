@@ -15,7 +15,6 @@ namespace AspNetAESNonDp.Controllers
         public HomeController(EncryptionService encryptionService)
         {
             _encryptionService = encryptionService;
-            _encryptionService.SetKeyIV("45BLO2yoJkvBwz99kBEMlNkxvL40vUSGaqr/WBu3+Vg=", "Ou3fn+I9SVicGWMLkFEgZQ==");
         }
 
         public IActionResult Index()

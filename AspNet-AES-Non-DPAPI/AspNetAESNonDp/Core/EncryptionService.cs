@@ -10,45 +10,23 @@ namespace AspNetAESNonDp.Core
 {
     public class EncryptionService
     {
-        private byte[] _key;
-        private byte[] _iv;
+        private readonly KeyInfo _keyInfo;
 
-        public string KeyString => Convert.ToBase64String(_key);
-        public string IVString => Convert.ToBase64String(_iv);
-
-        public EncryptionService(string key = null, string iv = null)
+        public EncryptionService(KeyInfo keyInfo = null)
         {
-            if (null == key && null == iv)
-            {
-                using (var myAes = Aes.Create())
-                {
-                    _key = myAes.Key;
-                    _iv = myAes.IV;
-                }
-            }
-            else
-            {
-                _key = Convert.FromBase64String(key);
-                _iv = Convert.FromBase64String(iv);
-            }
-        }
-
-        public void SetKeyIV(string key, string iv)
-        {
-            _key = Convert.FromBase64String(key);
-            _iv = Convert.FromBase64String(iv);
+            _keyInfo = keyInfo;
         }
 
         public string Encrypt(string input)
         {
-            var enc = EncryptStringToBytes_Aes(input, _key, _iv);
+            var enc = EncryptStringToBytes_Aes(input, _keyInfo.Key, _keyInfo.Iv);
             return Convert.ToBase64String(enc);
         }
 
         public string Decrypt(string cipherText)
         {
             var cipherBytes = Convert.FromBase64String(cipherText);
-            return DecryptStringFromBytes_Aes(cipherBytes, _key, _iv);
+            return DecryptStringFromBytes_Aes(cipherBytes, _keyInfo.Key, _keyInfo.Iv);
         }
 
         private static byte[] EncryptStringToBytes_Aes(string plainText, byte[] key, byte[] iv)

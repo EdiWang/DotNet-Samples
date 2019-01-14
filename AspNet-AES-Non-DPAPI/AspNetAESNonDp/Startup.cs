@@ -28,7 +28,8 @@ namespace AspNetAESNonDp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddTransient<EncryptionService>();
+            services.AddTransient(ec => new EncryptionService(
+                new KeyInfo("45BLO2yoJkvBwz99kBEMlNkxvL40vUSGaqr/WBu3+Vg=", "Ou3fn+I9SVicGWMLkFEgZQ==")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
