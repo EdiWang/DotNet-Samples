@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageTags>AI,Language,Azure</PackageTags>
+    <Description>Detect what's the language of a given text</Description>
+    <Authors>Edi Wang</Authors>
+    <Company>edi.wang</Company>
+    <RepositoryUrl>https://github.com/EdiWang/DotNet-Samples</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>
