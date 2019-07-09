@@ -19,24 +19,13 @@ namespace MatrixCard
         {
             get
             {
-                var arr = new int[Rows, Cols];
-                var k = 0;
-                for (var i = 0; i < Rows; i++)
-                {
-                    for (var j = 0; j < Cols; j++)
-                    {
-                        arr[i, j] = Cells[k].Value;
-                        k++;
-                    }
-                }
-
                 var lineArr = new int[Rows * Cols];
                 var index = 0;
                 for (var row = 0; row < Rows; row++)
                 {
                     for (var col = 0; col < Cols; col++)
                     {
-                        lineArr[index] = arr[row, col];
+                        lineArr[index] = Cells[index].Value;
                         index++;
                     }
                 }
