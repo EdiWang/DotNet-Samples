@@ -13,15 +13,14 @@ namespace MatrixCard
             WriteMessage($"Generate Matrix Card:", ConsoleColor.Yellow);
             var card = new Card().GenerateData();
             PrintCard(card);
-            Console.WriteLine(Environment.NewLine);
 
-            Console.WriteLine($"Matrix Card Data: {Environment.NewLine}{JsonConvert.SerializeObject(card, Formatting.Indented)}");
-            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine($"{JsonConvert.SerializeObject(card, Formatting.Indented)}");
+            Console.WriteLine();
 
             WriteMessage("Load Data:", ConsoleColor.Yellow);
             var card2 = new Card().LoadCellData(card.CellData);
             PrintCard(card2);
-            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine();
 
             WriteMessage("Matrix Card Validation:", ConsoleColor.Yellow);
             var cellsToValidate = card.PickRandomCells(3).ToList();
