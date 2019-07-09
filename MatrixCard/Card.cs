@@ -20,19 +20,8 @@ namespace MatrixCard
         {
             get
             {
-                // Can't use LINQ because order needs to be preserved
-                var lineArr = new int[Rows * Cols];
-                var index = 0;
-                for (var row = 0; row < Rows; row++)
-                {
-                    for (var col = 0; col < Cols; col++)
-                    {
-                        lineArr[index] = Cells[index].Value;
-                        index++;
-                    }
-                }
-
-                return string.Join(',', lineArr);
+                var vals = Cells.Select(c => c.Value);
+                return string.Join(',', vals);
             }
         }
 
@@ -76,6 +65,12 @@ namespace MatrixCard
         public void LoadCellData(string strMatrix)
         {
             var tempArrStr = strMatrix.Split(',');
+            if (tempArrStr.Length != Rows * Cols)
+            {
+                throw new ArgumentException(
+                    "The number of elements in the matrix does not match the current card cell numbers.", nameof(strMatrix));
+            }
+
             var arr = new int[Rows, Cols];
 
             var index = 0;
