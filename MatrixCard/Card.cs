@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace MatrixCard
 {
@@ -11,7 +12,37 @@ namespace MatrixCard
 
         public int Cols { get; set; }
 
+        [JsonIgnore]
         public List<Cell> Cell { get; set; }
+
+        public string CellData
+        {
+            get
+            {
+                var arr = ConvertCellListToMatrixArray(Cell);
+
+                var matrixStr = string.Empty;
+                var lineArr = new int[Rows * Cols];
+                var k = 0;
+                for (var i = 0; i < 5; i++)
+                {
+                    for (var j = 0; j < 5; j++)
+                    {
+                        lineArr[k] = arr[i, j];
+                        k++;
+                    }
+                }
+                for (var i = 0; i < lineArr.Length; i++)
+                {
+                    matrixStr += lineArr[i];
+                    if (i < Rows * Cols - 1)
+                    {
+                        matrixStr += ",";
+                    }
+                }
+                return matrixStr;
+            }
+        }
 
         public bool Validate(List<Cell> cellsToValidate)
         {
@@ -41,55 +72,31 @@ namespace MatrixCard
             return cells;
         }
 
-        public override string ToString()
-        {
-            var arr = ConvertCellListToMatrixArray(Cell);
-
-            var matrixStr = string.Empty;
-            var lineArr = new int[Rows * Cols];
-            var k = 0;
-            for (var i = 0; i < 5; i++)
-            {
-                for (var j = 0; j < 5; j++)
-                {
-                    lineArr[k] = arr[i, j];
-                    k++;
-                }
-            }
-            for (var i = 0; i < lineArr.Length; i++)
-            {
-                matrixStr += lineArr[i];
-                if (i < Rows * Cols - 1)
-                {
-                    matrixStr += ",";
-                }
-            }
-            return matrixStr;
-        }
-
         public void LoadCellData(string strMatrix)
         {
+            var tempArrStr = strMatrix.Split(',');
             var arr = new int[5, 5];
             var tempArr = new int[Rows * Cols];
-            var k = 0;
-            var tempArrStr = strMatrix.Split(',');
+
+            var index = 0;
             for (var i = 0; i < tempArr.Length; i++)
             {
                 tempArr[i] = int.Parse(tempArrStr[i]);
             }
+
             for (var i = 0; i < 5; i++)
             {
                 for (var j = 0; j < 5; j++)
                 {
-                    arr[i, j] = tempArr[k];
-                    k++;
+                    arr[i, j] = tempArr[index];
+                    index++;
                 }
             }
 
-            Fill(arr);
+            FillCellData(arr);
         }
 
-        private void Fill(int[,] array)
+        private void FillCellData(int[,] array)
         {
             var cells = new List<Cell>();
             var lineArr = new int[Rows * Cols];
@@ -115,7 +122,7 @@ namespace MatrixCard
             Cols = cols;
 
             var arr = GenerateRandomMatrix(rows, cols);
-            Fill(arr);
+            FillCellData(arr);
         }
 
         private static int[,] ConvertCellListToMatrixArray(IReadOnlyList<Cell> cells)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace MatrixCard
 {
@@ -9,7 +10,7 @@ namespace MatrixCard
         static void Main(string[] args)
         {
             var card = new Card();
-            Console.WriteLine($"Generated Matrix Card with Id '{card.Id}':");
+            Console.WriteLine($"Generated Matrix Card:");
 
             Console.WriteLine("  | A\tB\tC\tD\tE");
             Console.WriteLine("-------------------------------------------");
@@ -26,6 +27,9 @@ namespace MatrixCard
                 Console.WriteLine();
             }
 
+            Console.WriteLine(Environment.NewLine);
+
+            Console.WriteLine($"Matrix Card Data: {Environment.NewLine}{JsonConvert.SerializeObject(card, Formatting.Indented)}");
             Console.WriteLine(Environment.NewLine);
 
             Console.WriteLine("Matrix Card Validation:");
