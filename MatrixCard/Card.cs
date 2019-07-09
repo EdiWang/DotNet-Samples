@@ -77,19 +77,13 @@ namespace MatrixCard
         {
             var tempArrStr = strMatrix.Split(',');
             var arr = new int[Rows, Cols];
-            var tempArr = new int[Rows * Cols];
 
             var index = 0;
-            for (var i = 0; i < tempArr.Length; i++)
-            {
-                tempArr[i] = int.Parse(tempArrStr[i]);
-            }
-
             for (var row = 0; row < Rows; row++)
             {
                 for (var col = 0; col < Cols; col++)
                 {
-                    arr[row, col] = tempArr[index];
+                    arr[row, col] = int.Parse(tempArrStr[index]);
                     index++;
                 }
             }
