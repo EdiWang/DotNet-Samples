@@ -31,6 +31,7 @@ namespace MatrixCard
 
             Rows = rows;
             Cols = cols;
+            Cells = new List<Cell>();
         }
 
         public Card GenerateData()
@@ -44,7 +45,7 @@ namespace MatrixCard
         {
             return (
                 from cell in cellsToValidate
-                let thisCell = Cells.Find(p => p.ColIndex == cell.ColIndex 
+                let thisCell = Cells.Find(p => p.ColIndex == cell.ColIndex
                                                && p.RowIndex == cell.RowIndex)
                 select thisCell.Value == cell.Value)
                 .All(matches => matches);
@@ -90,20 +91,14 @@ namespace MatrixCard
 
         private void FillCellData(int[,] array)
         {
-            var cells = new List<Cell>();
-            var lineArr = new int[Rows * Cols];
-            var index = 0;
             for (var row = 0; row < Rows; row++)
             {
                 for (var col = 0; col < Cols; col++)
                 {
-                    lineArr[index] = array[row, col];
-                    var c = new Cell(row, col) { Value = lineArr[index] };
-                    cells.Add(c);
-                    index++;
+                    var c = new Cell(row, col, array[row, col]);
+                    Cells.Add(c);
                 }
             }
-            Cells = cells;
         }
 
         private static int[,] GenerateRandomMatrix(int rows, int cols)
