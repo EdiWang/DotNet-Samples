@@ -9,32 +9,23 @@ namespace MatrixCard
     {
         static void Main(string[] args)
         {
-            var card = new Card();
+            var card = new Card(6, 5).GenerateData();
             Console.WriteLine($"Generated Matrix Card:");
 
-            Console.WriteLine("  | A\tB\tC\tD\tE");
-            Console.WriteLine("-------------------------------------------");
-
-            var i = 0;
-            for (var k = 0; k < card.Rows; k++)
-            {
-                Console.Write(k + " | ");
-                for (var l = 0; l < card.Cols; l++)
-                {
-                    Console.Write(card.Cell[i].Value + "\t");
-                    i++;
-                }
-                Console.WriteLine();
-            }
-
+            PrintCard(card);
             Console.WriteLine(Environment.NewLine);
 
             Console.WriteLine($"Matrix Card Data: {Environment.NewLine}{JsonConvert.SerializeObject(card, Formatting.Indented)}");
             Console.WriteLine(Environment.NewLine);
 
+            Console.WriteLine("Load Data:");
+            var card2 = new Card(6,5);
+            card2.LoadCellData(card.CellData);
+            PrintCard(card2);
+            Console.WriteLine(Environment.NewLine);
+
             Console.WriteLine("Matrix Card Validation:");
             var cellsToValidate = card.PickRandomCells(3);
-
             var sb = new StringBuilder();
             foreach (var t in cellsToValidate)
             {
@@ -59,5 +50,22 @@ namespace MatrixCard
             Console.ReadKey();
         }
 
+        private static void PrintCard(Card card)
+        {
+            Console.WriteLine("  | A\tB\tC\tD\tE");
+            Console.WriteLine("-------------------------------------------");
+            var i = 0;
+            for (var k = 0; k < card.Rows; k++)
+            {
+                Console.Write(k + " | ");
+                for (var l = 0; l < card.Cols; l++)
+                {
+                    Console.Write(card.Cells[i].Value + "\t");
+                    i++;
+                }
+
+                Console.WriteLine();
+            }
+        }
     }
 }

@@ -13,23 +13,32 @@ namespace MatrixCard
         public int Cols { get; set; }
 
         [JsonIgnore]
-        public List<Cell> Cell { get; set; }
+        public List<Cell> Cells { get; set; }
 
         public string CellData
         {
             get
             {
-                var arr = ConvertCellListToMatrixArray(Cell);
+                var arr = new int[Rows, Cols];
+                var k = 0;
+                for (var i = 0; i < Rows; i++)
+                {
+                    for (var j = 0; j < Cols; j++)
+                    {
+                        arr[i, j] = Cells[k].Value;
+                        k++;
+                    }
+                }
 
                 var matrixStr = string.Empty;
                 var lineArr = new int[Rows * Cols];
-                var k = 0;
-                for (var i = 0; i < 5; i++)
+                var index = 0;
+                for (var row = 0; row < Rows; row++)
                 {
-                    for (var j = 0; j < 5; j++)
+                    for (var col = 0; col < Cols; col++)
                     {
-                        lineArr[k] = arr[i, j];
-                        k++;
+                        lineArr[index] = arr[row, col];
+                        index++;
                     }
                 }
                 for (var i = 0; i < lineArr.Length; i++)
@@ -44,11 +53,26 @@ namespace MatrixCard
             }
         }
 
+        public Card(int rows = 5, int cols = 5)
+        {
+            Id = Guid.NewGuid();
+
+            Rows = rows;
+            Cols = cols;
+        }
+
+        public Card GenerateData()
+        {
+            var arr = GenerateRandomMatrix(Rows, Cols);
+            FillCellData(arr);
+            return this;
+        }
+
         public bool Validate(List<Cell> cellsToValidate)
         {
             foreach (var cell in cellsToValidate)
             {
-                var thisCell = Cell.Find(p => p.ColIndex == cell.ColIndex && p.RowIndex == cell.RowIndex);
+                var thisCell = Cells.Find(p => p.ColIndex == cell.ColIndex && p.RowIndex == cell.RowIndex);
                 var matches = thisCell.Value == cell.Value;
                 if (!matches)
                 {
@@ -75,7 +99,7 @@ namespace MatrixCard
         public void LoadCellData(string strMatrix)
         {
             var tempArrStr = strMatrix.Split(',');
-            var arr = new int[5, 5];
+            var arr = new int[Rows, Cols];
             var tempArr = new int[Rows * Cols];
 
             var index = 0;
@@ -84,9 +108,9 @@ namespace MatrixCard
                 tempArr[i] = int.Parse(tempArrStr[i]);
             }
 
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < Rows; i++)
             {
-                for (var j = 0; j < 5; j++)
+                for (var j = 0; j < Cols; j++)
                 {
                     arr[i, j] = tempArr[index];
                     index++;
@@ -96,14 +120,16 @@ namespace MatrixCard
             FillCellData(arr);
         }
 
+        #region Private Methods
+
         private void FillCellData(int[,] array)
         {
             var cells = new List<Cell>();
             var lineArr = new int[Rows * Cols];
             var k = 0;
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < Rows; i++)
             {
-                for (var j = 0; j < 5; j++)
+                for (var j = 0; j < Cols; j++)
                 {
                     lineArr[k] = array[i, j];
                     var c = new Cell(i, j) { Value = lineArr[k] };
@@ -111,33 +137,7 @@ namespace MatrixCard
                     k++;
                 }
             }
-            Cell = cells;
-        }
-
-        public Card(int rows = 5, int cols = 5)
-        {
-            Id = Guid.NewGuid();
-
-            Rows = rows;
-            Cols = cols;
-
-            var arr = GenerateRandomMatrix(rows, cols);
-            FillCellData(arr);
-        }
-
-        private static int[,] ConvertCellListToMatrixArray(IReadOnlyList<Cell> cells)
-        {
-            var arr = new int[5, 5];
-            var k = 0;
-            for (var i = 0; i < 5; i++)
-            {
-                for (var j = 0; j < 5; j++)
-                {
-                    arr[i, j] = cells[k].Value;
-                    k++;
-                }
-            }
-            return arr;
+            Cells = cells;
         }
 
         private static int[,] GenerateRandomMatrix(int rows, int cols)
@@ -153,5 +153,7 @@ namespace MatrixCard
             }
             return arr;
         }
+
+        #endregion
     }
 }
