@@ -63,7 +63,7 @@ namespace MatrixCard
             }
         }
 
-        public void LoadCellData(string strMatrix)
+        public Card LoadCellData(string strMatrix)
         {
             var tempArrStr = strMatrix.Split(',');
             if (tempArrStr.Length != Rows * Cols)
@@ -85,6 +85,7 @@ namespace MatrixCard
             }
 
             FillCellData(arr);
+            return this;
         }
 
         #region Private Methods
