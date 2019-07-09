@@ -30,7 +30,6 @@ namespace MatrixCard
                     }
                 }
 
-                var matrixStr = string.Empty;
                 var lineArr = new int[Rows * Cols];
                 var index = 0;
                 for (var row = 0; row < Rows; row++)
@@ -41,15 +40,8 @@ namespace MatrixCard
                         index++;
                     }
                 }
-                for (var i = 0; i < lineArr.Length; i++)
-                {
-                    matrixStr += lineArr[i];
-                    if (i < Rows * Cols - 1)
-                    {
-                        matrixStr += ",";
-                    }
-                }
-                return matrixStr;
+
+                return string.Join(',', lineArr);
             }
         }
 
@@ -108,11 +100,11 @@ namespace MatrixCard
                 tempArr[i] = int.Parse(tempArrStr[i]);
             }
 
-            for (var i = 0; i < Rows; i++)
+            for (var row = 0; row < Rows; row++)
             {
-                for (var j = 0; j < Cols; j++)
+                for (var col = 0; col < Cols; col++)
                 {
-                    arr[i, j] = tempArr[index];
+                    arr[row, col] = tempArr[index];
                     index++;
                 }
             }
@@ -126,15 +118,15 @@ namespace MatrixCard
         {
             var cells = new List<Cell>();
             var lineArr = new int[Rows * Cols];
-            var k = 0;
-            for (var i = 0; i < Rows; i++)
+            var index = 0;
+            for (var row = 0; row < Rows; row++)
             {
-                for (var j = 0; j < Cols; j++)
+                for (var col = 0; col < Cols; col++)
                 {
-                    lineArr[k] = array[i, j];
-                    var c = new Cell(i, j) { Value = lineArr[k] };
+                    lineArr[index] = array[row, col];
+                    var c = new Cell(row, col) { Value = lineArr[index] };
                     cells.Add(c);
-                    k++;
+                    index++;
                 }
             }
             Cells = cells;
