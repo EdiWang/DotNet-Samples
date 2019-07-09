@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace MatrixCard
@@ -19,6 +20,7 @@ namespace MatrixCard
         {
             get
             {
+                // Can't use LINQ because order needs to be preserved
                 var lineArr = new int[Rows * Cols];
                 var index = 0;
                 for (var row = 0; row < Rows; row++)
@@ -49,32 +51,26 @@ namespace MatrixCard
             return this;
         }
 
-        public bool Validate(List<Cell> cellsToValidate)
+        public bool Validate(IEnumerable<Cell> cellsToValidate)
         {
-            foreach (var cell in cellsToValidate)
-            {
-                var thisCell = Cells.Find(p => p.ColIndex == cell.ColIndex && p.RowIndex == cell.RowIndex);
-                var matches = thisCell.Value == cell.Value;
-                if (!matches)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return (
+                from cell in cellsToValidate
+                let thisCell = Cells.Find(p => p.ColIndex == cell.ColIndex 
+                                               && p.RowIndex == cell.RowIndex)
+                select thisCell.Value == cell.Value)
+                .All(matches => matches);
         }
 
-        public List<Cell> PickRandomCells(int howMany)
+        public IEnumerable<Cell> PickRandomCells(int howMany)
         {
             var r = new Random();
-            var cells = new List<Cell>();
             for (var i = 0; i < howMany; i++)
             {
                 var randomCol = r.Next(0, Cols);
                 var randomRow = r.Next(0, Rows);
                 var c = new Cell(randomRow, randomCol);
-                cells.Add(c);
+                yield return c;
             }
-            return cells;
         }
 
         public void LoadCellData(string strMatrix)

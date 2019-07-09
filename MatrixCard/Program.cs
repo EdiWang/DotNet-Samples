@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -25,7 +26,7 @@ namespace MatrixCard
             Console.WriteLine(Environment.NewLine);
 
             Console.WriteLine("Matrix Card Validation:");
-            var cellsToValidate = card.PickRandomCells(3);
+            var cellsToValidate = card.PickRandomCells(3).ToList();
             var sb = new StringBuilder();
             foreach (var t in cellsToValidate)
             {
