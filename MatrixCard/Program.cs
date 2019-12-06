@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace MatrixCard
 {
@@ -14,7 +14,7 @@ namespace MatrixCard
             var card = new Card().GenerateData();
             PrintCard(card);
 
-            Console.WriteLine($"{JsonConvert.SerializeObject(card, Formatting.Indented)}");
+            Console.WriteLine($"{JsonSerializer.Serialize(card, new JsonSerializerOptions { WriteIndented = true })}");
             Console.WriteLine();
 
             WriteMessage("Load Data:", ConsoleColor.Yellow);
